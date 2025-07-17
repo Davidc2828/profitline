@@ -34,19 +34,36 @@
       margin-top: 15px;
       font-weight: 600;
     }
-    input[type="text"],
-    input[type="time"] {
-      width: 100%;
-      padding: 8px 10px;
+    .time-field {
+      display: flex;
+      align-items: center;
       margin-top: 6px;
-      border-radius: 4px;
+    }
+    input[type="time"] {
+      flex-grow: 1;
+      padding: 8px 10px;
+      border-radius: 4px 0 0 4px;
       border: 1px solid #bbb;
       font-size: 1rem;
-    }
-    input[readonly] {
       background-color: #e0e0e0;
       color: #555;
       cursor: not-allowed;
+      border-right: none;
+    }
+    button.set-time {
+      padding: 8px 15px;
+      border: 1px solid #00a859;
+      background-color: #00a859;
+      color: white;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button.set-time:hover {
+      background-color: #00914b;
+      border-color: #00914b;
     }
     .alert {
       color: #b71c1c;
@@ -54,7 +71,7 @@
       margin-top: 5px;
       display: none;
     }
-    button {
+    button.submit-btn {
       margin-top: 30px;
       background: #00a859;
       color: white;
@@ -66,7 +83,7 @@
       width: 100%;
       font-weight: 700;
     }
-    button:hover {
+    button.submit-btn:hover {
       background: #00914b;
     }
     .success-message {
@@ -90,57 +107,81 @@
     <input type="text" id="cedula" name="cedula" required pattern="\d+" title="Solo números" />
 
     <label for="inicioTurno">Inicio de turno:</label>
-    <input type="time" id="inicioTurno" name="inicioTurno" readonly />
+    <div class="time-field">
+      <input type="time" id="inicioTurno" name="inicioTurno" readonly />
+      <button type="button" class="set-time" data-target="inicioTurno">Hora Actual</button>
+    </div>
     <div class="alert" id="alertLlegadaTarde">¡Llegada después de las 08:00!</div>
 
     <label for="finTurno">Fin de turno:</label>
-    <input type="time" id="finTurno" name="finTurno" readonly />
+    <div class="time-field">
+      <input type="time" id="finTurno" name="finTurno" readonly />
+      <button type="button" class="set-time" data-target="finTurno">Hora Actual</button>
+    </div>
     <div class="alert" id="alertSalidaTemprano">¡Salida antes de las 17:00!</div>
 
     <label for="inicioBreak">Inicio de break:</label>
-    <input type="time" id="inicioBreak" name="inicioBreak" readonly />
-    
+    <div class="time-field">
+      <input type="time" id="inicioBreak" name="inicioBreak" readonly />
+      <button type="button" class="set-time" data-target="inicioBreak">Hora Actual</button>
+    </div>
+
     <label for="finBreak">Fin de break:</label>
-    <input type="time" id="finBreak" name="finBreak" readonly />
+    <div class="time-field">
+      <input type="time" id="finBreak" name="finBreak" readonly />
+      <button type="button" class="set-time" data-target="finBreak">Hora Actual</button>
+    </div>
     <div class="alert" id="alertBreakLargo">¡Break mayor a 15 minutos!</div>
 
     <label for="inicioAlmuerzo">Inicio de almuerzo:</label>
-    <input type="time" id="inicioAlmuerzo" name="inicioAlmuerzo" readonly />
-    
+    <div class="time-field">
+      <input type="time" id="inicioAlmuerzo" name="inicioAlmuerzo" readonly />
+      <button type="button" class="set-time" data-target="inicioAlmuerzo">Hora Actual</button>
+    </div>
+
     <label for="finAlmuerzo">Fin de almuerzo:</label>
-    <input type="time" id="finAlmuerzo" name="finAlmuerzo" readonly />
+    <div class="time-field">
+      <input type="time" id="finAlmuerzo" name="finAlmuerzo" readonly />
+      <button type="button" class="set-time" data-target="finAlmuerzo">Hora Actual</button>
+    </div>
     <div class="alert" id="alertAlmuerzoLargo">¡Almuerzo mayor a 1 hora!</div>
 
-    <button type="submit">Guardar Información</button>
+    <button type="submit" class="submit-btn">Guardar Información</button>
   </form>
 
   <div class="success-message" id="successMessage">¡Datos guardados correctamente!</div>
 </main>
 
 <script>
-  const form = document.getElementById('turnoForm');
-
+  // Función para convertir hora "HH:MM" a minutos
   function timeToMinutes(t) {
     const [h, m] = t.split(':').map(Number);
     return h * 60 + m;
   }
 
-  function setCurrentTime(fieldId) {
+  // Función para asignar hora actual a un input
+  function setCurrentTime(inputId) {
     const now = new Date();
     const h = now.getHours().toString().padStart(2, '0');
     const m = now.getMinutes().toString().padStart(2, '0');
-    document.getElementById(fieldId).value = `${h}:${m}`;
+    document.getElementById(inputId).value = `${h}:${m}`;
   }
 
-  // Asigna la hora actual al hacer clic en los inputs
-  ['inicioTurno','finTurno','inicioBreak','finBreak','inicioAlmuerzo','finAlmuerzo'].forEach(id => {
-    const input = document.getElementById(id);
-    input.addEventListener('click', () => setCurrentTime(id));
+  // Añadir evento a cada botón "Hora Actual"
+  document.querySelectorAll('button.set-time').forEach(button => {
+    button.addEventListener('click', () => {
+      const targetId = button.getAttribute('data-target');
+      setCurrentTime(targetId);
+    });
   });
+
+  // Manejo del formulario
+  const form = document.getElementById('turnoForm');
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
+    // Ocultar alertas previas
     document.querySelectorAll('.alert').forEach(a => a.style.display = 'none');
     document.getElementById('successMessage').style.display = 'none';
 
@@ -152,11 +193,13 @@
     const inicioAlmuerzo = form.inicioAlmuerzo.value;
     const finAlmuerzo = form.finAlmuerzo.value;
 
+    // Validar que todas las horas estén capturadas
     if (!inicioTurno || !finTurno || !inicioBreak || !finBreak || !inicioAlmuerzo || !finAlmuerzo) {
-      alert('Completa todas las horas (haz clic para capturarlas).');
+      alert('Completa todas las horas usando los botones "Hora Actual".');
       return;
     }
 
+    // Validaciones y alertas
     if (timeToMinutes(inicioTurno) > timeToMinutes("08:00")) {
       document.getElementById('alertLlegadaTarde').style.display = 'block';
       alert('¡Llegada después de las 08:00!');
@@ -179,6 +222,7 @@
       alert('¡Almuerzo mayor a 1 hora!');
     }
 
+    // Preparar datos para enviar
     const params = new URLSearchParams({
       cedula,
       inicioTurno,
