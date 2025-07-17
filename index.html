@@ -14,6 +14,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
     }
 
     header {
@@ -28,11 +29,18 @@
     }
 
     main {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .container {
       background: #fff;
       padding: 20px;
       max-width: 500px;
-      width: 100%;
-      margin-top: 20px;
+      width: 90%;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
@@ -76,11 +84,17 @@
     .success {
       display: none;
       text-align: center;
-      color: #cc0000;
+      color: #ffffff;
       font-weight: bold;
+      background-color: #4CAF50;
       padding: 10px;
-      background-color: #e6e6e6;
+      margin-top: 15px;
       border-radius: 5px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
     }
   </style>
 </head>
@@ -90,31 +104,33 @@
   </header>
 
   <main>
-    <form id="formTurno">
-      <label for="cedula">Cédula</label>
-      <input type="text" id="cedula" name="cedula" required pattern="[0-9]+" placeholder="Ingresa tu cédula">
+    <div class="container">
+      <form id="formTurno">
+        <label for="cedula">Cédula</label>
+        <input type="text" id="cedula" name="cedula" required pattern="[0-9]+" placeholder="Ingresa tu cédula">
 
-      <label for="evento">Evento</label>
-      <select id="evento" name="evento" required>
-        <option value="">Selecciona evento</option>
-        <option value="inicioTurno">Inicio Turno</option>
-        <option value="finTurno">Fin Turno</option>
-        <option value="inicioBreak">Inicio Break</option>
-        <option value="finBreak">Fin Break</option>
-        <option value="inicioAlmuerzo">Inicio Almuerzo</option>
-        <option value="finAlmuerzo">Fin Almuerzo</option>
-      </select>
+        <label for="evento">Evento</label>
+        <select id="evento" name="evento" required>
+          <option value="">Selecciona evento</option>
+          <option value="inicioTurno">Inicio Turno</option>
+          <option value="finTurno">Fin Turno</option>
+          <option value="inicioBreak">Inicio Break</option>
+          <option value="finBreak">Fin Break</option>
+          <option value="inicioAlmuerzo">Inicio Almuerzo</option>
+          <option value="finAlmuerzo">Fin Almuerzo</option>
+        </select>
 
-      <label for="hora">Hora actual</label>
-      <div style="display: flex; gap: 10px;">
-        <input type="time" id="hora" name="hora" readonly />
-        <button type="button" class="hora-btn" onclick="capturarHora()">Capturar</button>
-      </div>
+        <label for="hora">Hora actual</label>
+        <div class="row">
+          <input type="time" id="hora" name="hora" readonly />
+          <button type="button" class="hora-btn" onclick="capturarHora()">Capturar</button>
+        </div>
 
-      <button type="submit" class="submit-btn">Guardar</button>
-    </form>
+        <button type="submit" class="submit-btn">Guardar</button>
+      </form>
 
-    <div class="success" id="mensajeExito">✅ ¡Datos guardados correctamente!</div>
+      <div class="success" id="mensajeExito">✅ Guardado correctamente</div>
+    </div>
   </main>
 
   <script>
@@ -146,12 +162,16 @@
       try {
         const res = await fetch(url);
         if (res.ok) {
-          document.getElementById("mensajeExito").style.display = "block";
-          setTimeout(() => {
-            document.getElementById("mensajeExito").style.display = "none";
-          }, 3000);
+          const msg = document.getElementById("mensajeExito");
+          msg.style.display = "block";
+
+          // Limpiar formulario
           document.getElementById("formTurno").reset();
-          document.getElementById("hora").value = '';
+          document.getElementById("hora").value = "";
+
+          setTimeout(() => {
+            msg.style.display = "none";
+          }, 3000);
         } else {
           alert("❌ Error al guardar en Google Sheets.");
         }
