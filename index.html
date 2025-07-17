@@ -1,126 +1,206 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Turnos Profitline</title>
-  <style>
-    body {
-      background-color: #000;
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    .btn {
-      background-color: #c8102e;
-      color: white;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-      margin: 5px;
-    }
-    table, th, td {
-      border: 1px solid white;
-      border-collapse: collapse;
-      padding: 8px;
-    }
-    table {
-      width: 100%;
-      margin-top: 20px;
-    }
-    th {
-      background-color: #c8102e;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Registro de Turno - PROFITLINE</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f7f8;
+    color: #333;
+    margin: 0; padding: 0;
+  }
+  header {
+    background: linear-gradient(90deg, #004a99, #00a859);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    font-weight: 900;
+    font-size: 2.5rem;
+    letter-spacing: 4px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  main {
+    max-width: 600px;
+    background: white;
+    margin: 30px auto;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+  }
+  input[type="text"],
+  input[type="time"] {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 6px;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    font-size: 1rem;
+  }
+  .alert {
+    color: #b71c1c;
+    font-weight: bold;
+    margin-top: 5px;
+    display: none;
+  }
+  button {
+    margin-top: 30px;
+    background: #004a99;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 700;
+  }
+  button:hover {
+    background: #0066cc;
+  }
+  .success-message {
+    margin-top: 20px;
+    color: #006600;
+    font-weight: bold;
+    display: none;
+    text-align: center;
+  }
+</style>
 </head>
 <body>
-  <h1>Registro de Turnos - Profitline</h1>
-  <input type="text" id="nombre" placeholder="Nombre del Analista">
-  <button class="btn" onclick="registrar('Ingreso')">Ingreso</button>
-  <button class="btn" onclick="registrar('Inicio Break')">Inicio Break</button>
-  <button class="btn" onclick="registrar('Fin Break')">Fin Break</button>
-  <button class="btn" onclick="registrar('Inicio Almuerzo')">Inicio Almuerzo</button>
-  <button class="btn" onclick="registrar('Fin Almuerzo')">Fin Almuerzo</button>
-  <button class="btn" onclick="registrar('Salida')">Salida</button>
-  <button class="btn" onclick="guardar()">Guardar en la nube</button>
 
-  <table id="tablaRegistros">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Tipo</th>
-        <th>Fecha</th>
-        <th>Hora</th>
-        <th>Alerta</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<header>
+  PROFITLINE
+</header>
 
-  <script>
-    const registros = [];
-    const tiempos = {};
+<main>
+  <form id="turnoForm">
+    <label for="cedula">Cédula:</label>
+    <input type="text" id="cedula" name="cedula" required pattern="\d+" title="Solo números" />
 
-    function registrar(tipo) {
-      const nombre = document.getElementById('nombre').value.trim();
-      if (!nombre) return alert('Ingrese nombre');
+    <label for="inicioTurno">Inicio de turno:</label>
+    <input type="time" id="inicioTurno" name="inicioTurno" required />
+    <div class="alert" id="alertLlegadaTarde">¡Llegada después de las 08:00!</div>
 
-      const fecha = new Date();
-      const hora = fecha.toLocaleTimeString();
-      const fechaStr = fecha.toLocaleDateString();
-      let alerta = '';
+    <label for="finTurno">Fin de turno:</label>
+    <input type="time" id="finTurno" name="finTurno" required />
+    <div class="alert" id="alertSalidaTemprano">¡Salida antes de las 17:00!</div>
 
-      const key = nombre + '_' + fechaStr;
-      if (!tiempos[key]) tiempos[key] = {};
-      tiempos[key][tipo] = fecha;
+    <label for="inicioBreak">Inicio de break:</label>
+    <input type="time" id="inicioBreak" name="inicioBreak" required />
+    
+    <label for="finBreak">Fin de break:</label>
+    <input type="time" id="finBreak" name="finBreak" required />
+    <div class="alert" id="alertBreakLargo">¡Break mayor a 15 minutos!</div>
 
-      if (tipo === 'Ingreso' && fecha.getHours() >= 8) alerta = 'Ingreso Tarde';
-      if (tipo === 'Salida' && fecha.getHours() < 18) alerta = 'Salida Temprano';
-      if (tipo === 'Fin Break' && tiempos[key]['Inicio Break']) {
-        const diff = (fecha - tiempos[key]['Inicio Break']) / 60000;
-        if (diff > 15) alerta = 'Break mayor a 15 minutos';
-      }
-      if (tipo === 'Fin Almuerzo' && tiempos[key]['Inicio Almuerzo']) {
-        const diff = (fecha - tiempos[key]['Inicio Almuerzo']) / 60000;
-        if (diff > 60) alerta = 'Almuerzo mayor a 1 hora';
-      }
+    <label for="inicioAlmuerzo">Inicio de almuerzo:</label>
+    <input type="time" id="inicioAlmuerzo" name="inicioAlmuerzo" required />
+    
+    <label for="finAlmuerzo">Fin de almuerzo:</label>
+    <input type="time" id="finAlmuerzo" name="finAlmuerzo" required />
+    <div class="alert" id="alertAlmuerzoLargo">¡Almuerzo mayor a 1 hora!</div>
 
-      registros.push({ nombre, tipo, fecha: fechaStr, hora, alerta });
-      actualizarTabla();
+    <button type="submit">Guardar Información</button>
+  </form>
+
+  <div class="success-message" id="successMessage">¡Datos guardados correctamente!</div>
+</main>
+
+<script>
+  const form = document.getElementById('turnoForm');
+
+  function timeToMinutes(t) {
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Limpiar alertas
+    document.querySelectorAll('.alert').forEach(a => a.style.display = 'none');
+    document.getElementById('successMessage').style.display = 'none';
+
+    const cedula = form.cedula.value.trim();
+    const inicioTurno = form.inicioTurno.value;
+    const finTurno = form.finTurno.value;
+    const inicioBreak = form.inicioBreak.value;
+    const finBreak = form.finBreak.value;
+    const inicioAlmuerzo = form.inicioAlmuerzo.value;
+    const finAlmuerzo = form.finAlmuerzo.value;
+
+    // Validar que tiempos tengan sentido
+    if (!inicioTurno || !finTurno || !inicioBreak || !finBreak || !inicioAlmuerzo || !finAlmuerzo) {
+      alert('Por favor completa todos los campos de hora.');
+      return;
     }
 
-    function actualizarTabla() {
-      const tbody = document.querySelector('#tablaRegistros tbody');
-      tbody.innerHTML = '';
-      registros.forEach(r => {
-        tbody.innerHTML += `<tr>
-          <td>${r.nombre}</td>
-          <td>${r.tipo}</td>
-          <td>${r.fecha}</td>
-          <td>${r.hora}</td>
-          <td>${r.alerta}</td>
-        </tr>`;
-      });
+    // Alerta llegada tarde (> 08:00)
+    if (timeToMinutes(inicioTurno) > timeToMinutes("08:00")) {
+      document.getElementById('alertLlegadaTarde').style.display = 'block';
+      alert('Alerta: ¡Llegada después de las 08:00!');
     }
 
-    function guardar() {
-      fetch("https://script.google.com/macros/s/AKfycbyjq_4aeTJxEVunwKxwkm2J6nYA4PPXqOciooY8afztvdBzHTpGrK43AlU5-JPW5Do5/exec", {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(registros)
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert("Guardado: " + data.status);
-        registros.length = 0;
-        actualizarTabla();
-      })
-      .catch(err => {
-        console.error(err);
-        alert("Error de conexión");
-      });
+    // Alerta salida temprana (< 17:00)
+    if (timeToMinutes(finTurno) < timeToMinutes("17:00")) {
+      document.getElementById('alertSalidaTemprano').style.display = 'block';
+      alert('Alerta: ¡Salida antes de las 17:00!');
     }
-  </script>
+
+    // Duración break
+    const duracionBreak = timeToMinutes(finBreak) - timeToMinutes(inicioBreak);
+    if (duracionBreak > 15) {
+      document.getElementById('alertBreakLargo').style.display = 'block';
+      alert('Alerta: ¡Break mayor a 15 minutos!');
+    }
+
+    // Duración almuerzo
+    const duracionAlmuerzo = timeToMinutes(finAlmuerzo) - timeToMinutes(inicioAlmuerzo);
+    if (duracionAlmuerzo > 60) {
+      document.getElementById('alertAlmuerzoLargo').style.display = 'block';
+      alert('Alerta: ¡Almuerzo mayor a 1 hora!');
+    }
+
+    // Preparar datos para enviar
+    const data = {
+      cedula,
+      inicioTurno,
+      finTurno,
+      inicioBreak,
+      finBreak,
+      inicioAlmuerzo,
+      finAlmuerzo
+    };
+
+    // Enviar datos al Apps Script (tu URL)
+    fetch('https://script.google.com/macros/s/AKfycbzUhmRLwGqSmPTsHwINYc6MHheitSWNsjSq8Ohv3voRgTzCc2o2zjk_i659JFmEYU_r/exec', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(resp => {
+      if (!resp.ok) throw new Error('Error al guardar los datos');
+      return resp.text();
+    })
+    .then(text => {
+      // Mostrar mensaje éxito
+      document.getElementById('successMessage').style.display = 'block';
+      form.reset();
+    })
+    .catch(err => {
+      alert('Error enviando datos: ' + err.message);
+    });
+  });
+</script>
+
 </body>
 </html>
