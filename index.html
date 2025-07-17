@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Registro de Turnos - PROFITLINE</title>
   <style>
-    /* Reset básico */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -14,9 +13,9 @@
 
     body {
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #004a99 0%, #00a859 100%);
+      background-color: #f4f4f4;
+      color: #222222; /* negro para texto */
       min-height: 100vh;
-      color: #333;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -25,29 +24,33 @@
     }
 
     header {
-      background-color: #002f66;
+      background-color: #000000; /* negro */
       width: 100%;
       max-width: 600px;
-      padding: 25px;
+      padding: 20px 0 15px;
       border-radius: 8px 8px 0 0;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      color: #00a859;
-      font-weight: 900;
-      font-size: 2.8rem;
-      letter-spacing: 4px;
-      text-align: center;
-      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
       user-select: none;
     }
 
+    header img {
+      max-height: 50px;
+      width: auto;
+      filter: brightness(0) invert(1); /* para que el logo blanco se vea si es negro el header */
+    }
+
     main {
-      background: #fff;
+      background: #ffffff;
       width: 100%;
       max-width: 600px;
       padding: 30px 35px 40px;
       border-radius: 0 0 8px 8px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
       margin-top: -5px;
+      color: #222222;
     }
 
     label {
@@ -55,7 +58,6 @@
       margin-bottom: 6px;
       font-weight: 600;
       font-size: 1.1rem;
-      color: #004a99;
       user-select: none;
     }
 
@@ -65,31 +67,34 @@
       width: 100%;
       padding: 10px 12px;
       margin-bottom: 20px;
-      border: 2px solid #00a859;
+      border: 2px solid #ccc; /* gris claro */
       border-radius: 6px;
       font-size: 1rem;
       font-weight: 500;
       transition: border-color 0.3s ease;
       user-select: text;
+      color: #222222;
+      background-color: #f9f9f9;
     }
 
     input[type="text"]:focus,
     select:focus,
     input[type="time"]:focus {
       outline: none;
-      border-color: #004a99;
-      background: #e6f2ff;
+      border-color: #cc0000; /* rojo */
+      background: #fff;
+      color: #000;
     }
 
     input[readonly] {
-      background-color: #f0f0f0;
+      background-color: #e0e0e0; /* gris medio */
       color: #555;
       cursor: default;
       user-select: none;
     }
 
     button {
-      background-color: #00a859;
+      background-color: #cc0000; /* rojo */
       border: none;
       color: white;
       font-size: 1.2rem;
@@ -103,7 +108,7 @@
       margin-top: 10px;
     }
     button:hover {
-      background-color: #00773d;
+      background-color: #990000; /* rojo oscuro */
     }
 
     #btnCapturarHora {
@@ -114,11 +119,11 @@
       margin-top: 0;
       margin-left: 15px;
       border-radius: 8px;
-      background-color: #004a99;
+      background-color: #000000; /* negro */
       transition: background-color 0.25s ease;
     }
     #btnCapturarHora:hover {
-      background-color: #003366;
+      background-color: #222222;
     }
 
     .hora-container {
@@ -130,9 +135,9 @@
     }
 
     .success-message {
-      background-color: #d4edda;
-      border: 1px solid #28a745;
-      color: #155724;
+      background-color: #e0e0e0;
+      border: 1px solid #cc0000;
+      color: #cc0000;
       padding: 15px 20px;
       border-radius: 6px;
       font-weight: 700;
@@ -144,9 +149,8 @@
     }
 
     @media (max-width: 400px) {
-      header {
-        font-size: 2rem;
-        padding: 18px;
+      header img {
+        max-height: 40px;
       }
       button, #btnCapturarHora {
         font-size: 1rem;
@@ -158,7 +162,7 @@
 <body>
 
   <header>
-    PROFITLINE
+    <img src="https://profitline.com.co/wp-content/uploads/2019/10/cropped-profitline-logo-wh-1.png" alt="Logo Profitline" />
   </header>
 
   <main>
@@ -230,7 +234,6 @@
 
       const params = new URLSearchParams(data).toString();
 
-      // Cambia esta URL por la URL de tu Apps Script desplegado
       const url = 'https://script.google.com/macros/s/AKfycbzhZuObCCe2TgfMpG663zQWI2LsTXW10bBmwM3yHYdl5HIWwwp8JS2jVVF7_Qs4IJJv/exec?' + params;
 
       fetch(url)
