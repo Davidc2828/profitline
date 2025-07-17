@@ -1,77 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Registro de Turno - PROFITLINE</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f4f7f8;
-    color: #333;
-    margin: 0; padding: 0;
-  }
-  header {
-    background: linear-gradient(90deg, #004a99, #00a859);
-    color: white;
-    padding: 20px 0;
-    text-align: center;
-    font-weight: 900;
-    font-size: 2.5rem;
-    letter-spacing: 4px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  main {
-    max-width: 600px;
-    background: white;
-    margin: 30px auto;
-    padding: 25px 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-  }
-  label {
-    display: block;
-    margin-top: 15px;
-    font-weight: 600;
-  }
-  input[type="text"],
-  input[type="time"] {
-    width: 100%;
-    padding: 8px 10px;
-    margin-top: 6px;
-    border-radius: 4px;
-    border: 1px solid #bbb;
-    font-size: 1rem;
-  }
-  .alert {
-    color: #b71c1c;
-    font-weight: bold;
-    margin-top: 5px;
-    display: none;
-  }
-  button {
-    margin-top: 30px;
-    background: #004a99;
-    color: white;
-    border: none;
-    padding: 15px;
-    border-radius: 6px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    width: 100%;
-    font-weight: 700;
-  }
-  button:hover {
-    background: #0066cc;
-  }
-  .success-message {
-    margin-top: 20px;
-    color: #006600;
-    font-weight: bold;
-    display: none;
-    text-align: center;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registro de Turno - PROFITLINE</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7f8;
+      color: #333;
+      margin: 0; padding: 0;
+    }
+    header {
+      background: linear-gradient(90deg, #004a99, #00a859);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      font-weight: 900;
+      font-size: 2.5rem;
+      letter-spacing: 4px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    main {
+      max-width: 600px;
+      background: white;
+      margin: 30px auto;
+      padding: 25px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    input[type="text"],
+    input[type="time"] {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 6px;
+      border-radius: 4px;
+      border: 1px solid #bbb;
+      font-size: 1rem;
+    }
+    input[readonly] {
+      background-color: #e0e0e0;
+      color: #555;
+      cursor: not-allowed;
+    }
+    .alert {
+      color: #b71c1c;
+      font-weight: bold;
+      margin-top: 5px;
+      display: none;
+    }
+    button {
+      margin-top: 30px;
+      background: #00a859;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 700;
+    }
+    button:hover {
+      background: #00914b;
+    }
+    .success-message {
+      margin-top: 20px;
+      color: #006600;
+      font-weight: bold;
+      display: none;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
@@ -85,25 +90,25 @@
     <input type="text" id="cedula" name="cedula" required pattern="\d+" title="Solo números" />
 
     <label for="inicioTurno">Inicio de turno:</label>
-    <input type="time" id="inicioTurno" name="inicioTurno" required />
+    <input type="time" id="inicioTurno" name="inicioTurno" readonly />
     <div class="alert" id="alertLlegadaTarde">¡Llegada después de las 08:00!</div>
 
     <label for="finTurno">Fin de turno:</label>
-    <input type="time" id="finTurno" name="finTurno" required />
+    <input type="time" id="finTurno" name="finTurno" readonly />
     <div class="alert" id="alertSalidaTemprano">¡Salida antes de las 17:00!</div>
 
     <label for="inicioBreak">Inicio de break:</label>
-    <input type="time" id="inicioBreak" name="inicioBreak" required />
+    <input type="time" id="inicioBreak" name="inicioBreak" readonly />
     
     <label for="finBreak">Fin de break:</label>
-    <input type="time" id="finBreak" name="finBreak" required />
+    <input type="time" id="finBreak" name="finBreak" readonly />
     <div class="alert" id="alertBreakLargo">¡Break mayor a 15 minutos!</div>
 
     <label for="inicioAlmuerzo">Inicio de almuerzo:</label>
-    <input type="time" id="inicioAlmuerzo" name="inicioAlmuerzo" required />
+    <input type="time" id="inicioAlmuerzo" name="inicioAlmuerzo" readonly />
     
     <label for="finAlmuerzo">Fin de almuerzo:</label>
-    <input type="time" id="finAlmuerzo" name="finAlmuerzo" required />
+    <input type="time" id="finAlmuerzo" name="finAlmuerzo" readonly />
     <div class="alert" id="alertAlmuerzoLargo">¡Almuerzo mayor a 1 hora!</div>
 
     <button type="submit">Guardar Información</button>
@@ -120,10 +125,22 @@
     return h * 60 + m;
   }
 
+  function setCurrentTime(fieldId) {
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2, '0');
+    const m = now.getMinutes().toString().padStart(2, '0');
+    document.getElementById(fieldId).value = `${h}:${m}`;
+  }
+
+  // Asigna la hora actual al hacer clic en los inputs
+  ['inicioTurno','finTurno','inicioBreak','finBreak','inicioAlmuerzo','finAlmuerzo'].forEach(id => {
+    const input = document.getElementById(id);
+    input.addEventListener('click', () => setCurrentTime(id));
+  });
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Limpiar alertas
     document.querySelectorAll('.alert').forEach(a => a.style.display = 'none');
     document.getElementById('successMessage').style.display = 'none';
 
@@ -136,34 +153,32 @@
     const finAlmuerzo = form.finAlmuerzo.value;
 
     if (!inicioTurno || !finTurno || !inicioBreak || !finBreak || !inicioAlmuerzo || !finAlmuerzo) {
-      alert('Por favor completa todos los campos de hora.');
+      alert('Completa todas las horas (haz clic para capturarlas).');
       return;
     }
 
-    // Alertas visuales y popups
     if (timeToMinutes(inicioTurno) > timeToMinutes("08:00")) {
       document.getElementById('alertLlegadaTarde').style.display = 'block';
-      alert('Alerta: ¡Llegada después de las 08:00!');
+      alert('¡Llegada después de las 08:00!');
     }
 
     if (timeToMinutes(finTurno) < timeToMinutes("17:00")) {
       document.getElementById('alertSalidaTemprano').style.display = 'block';
-      alert('Alerta: ¡Salida antes de las 17:00!');
+      alert('¡Salida antes de las 17:00!');
     }
 
     const duracionBreak = timeToMinutes(finBreak) - timeToMinutes(inicioBreak);
     if (duracionBreak > 15) {
       document.getElementById('alertBreakLargo').style.display = 'block';
-      alert('Alerta: ¡Break mayor a 15 minutos!');
+      alert('¡Break mayor a 15 minutos!');
     }
 
     const duracionAlmuerzo = timeToMinutes(finAlmuerzo) - timeToMinutes(inicioAlmuerzo);
     if (duracionAlmuerzo > 60) {
       document.getElementById('alertAlmuerzoLargo').style.display = 'block';
-      alert('Alerta: ¡Almuerzo mayor a 1 hora!');
+      alert('¡Almuerzo mayor a 1 hora!');
     }
 
-    // Crear query string con datos
     const params = new URLSearchParams({
       cedula,
       inicioTurno,
@@ -174,10 +189,8 @@
       finAlmuerzo
     });
 
-    // ✅ CORREGIDO: Agregar "?" antes de los parámetros
     const url = 'https://script.google.com/macros/s/AKfycbzhZuObCCe2TgfMpG663zQWI2LsTXW10bBmwM3yHYdl5HIWwwp8JS2jVVF7_Qs4IJJv/exec?' + params.toString();
 
-    // Enviar por GET
     fetch(url)
       .then(resp => {
         if (!resp.ok) throw new Error('Error al guardar los datos');
@@ -190,7 +203,6 @@
       .catch(err => {
         alert('Error enviando datos: ' + err.message);
       });
-
   });
 </script>
 
