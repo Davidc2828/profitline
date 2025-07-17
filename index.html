@@ -3,227 +3,162 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Registro de Turnos - PROFITLINE</title>
+  <title>Turnos Profitline</title>
   <style>
-    * {
-      box-sizing: border-box;
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      color: #000;
       margin: 0;
       padding: 0;
-    }
-
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: #f4f4f4;
-      color: #222222; /* negro para texto */
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding: 40px 15px;
     }
 
     header {
-      background-color: #000000; /* negro */
+      background-color: #000;
       width: 100%;
-      max-width: 600px;
-      padding: 20px 0 15px;
-      border-radius: 8px 8px 0 0;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      user-select: none;
+      padding: 10px;
+      text-align: center;
     }
 
     header img {
-      max-height: 50px;
-      width: auto;
-      user-select: none;
+      height: 60px;
     }
 
     main {
-      background: #ffffff;
+      background: #fff;
+      padding: 20px;
+      max-width: 500px;
       width: 100%;
-      max-width: 600px;
-      padding: 30px 35px 40px;
-      border-radius: 0 0 8px 8px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      margin-top: -5px;
-      color: #222222;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     label {
+      font-weight: bold;
+      margin-top: 10px;
       display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      font-size: 1.1rem;
-      user-select: none;
     }
 
-    input[type="text"],
-    select,
-    input[type="time"] {
+    input, select, button {
       width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 20px;
-      border: 2px solid #ccc; /* gris claro */
-      border-radius: 6px;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
       font-size: 1rem;
-      font-weight: 500;
-      transition: border-color 0.3s ease;
-      user-select: text;
-      color: #222222;
-      background-color: #f9f9f9;
-    }
-
-    input[type="text"]:focus,
-    select:focus,
-    input[type="time"]:focus {
-      outline: none;
-      border-color: #cc0000; /* rojo */
-      background: #fff;
-      color: #000;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
     input[readonly] {
-      background-color: #e0e0e0; /* gris medio */
-      color: #555;
-      cursor: default;
-      user-select: none;
+      background-color: #eee;
     }
 
-    button {
-      background-color: #cc0000; /* rojo */
-      border: none;
+    .hora-btn {
+      background-color: #000;
       color: white;
-      font-size: 1.2rem;
-      font-weight: 900;
-      padding: 15px 0;
-      border-radius: 8px;
+      font-weight: bold;
+      border: none;
       cursor: pointer;
-      width: 100%;
-      transition: background-color 0.25s ease;
-      user-select: none;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #990000; /* rojo oscuro */
     }
 
-    #btnCapturarHora {
-      width: 150px;
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 10px 0;
-      margin-top: 0;
-      margin-left: 15px;
-      border-radius: 8px;
-      background-color: #000000; /* negro */
-      transition: background-color 0.25s ease;
-    }
-    #btnCapturarHora:hover {
-      background-color: #222222;
+    .submit-btn {
+      background-color: #cc0000;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
     }
 
-    .hora-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    .success-message {
-      background-color: #e0e0e0;
-      border: 1px solid #cc0000;
-      color: #cc0000;
-      padding: 15px 20px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      text-align: center;
-      margin-top: 20px;
+    .success {
       display: none;
-      user-select: none;
-    }
-
-    @media (max-width: 400px) {
-      header img {
-        max-height: 40px;
-      }
-      button, #btnCapturarHora {
-        font-size: 1rem;
-        padding: 12px 0;
-      }
+      text-align: center;
+      color: #cc0000;
+      font-weight: bold;
+      padding: 10px;
+      background-color: #e6e6e6;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-
   <header>
-    <!-- Cambia esta URL por el link directo a tu logo PNG en GitHub -->
-    <img src="https://raw.githubusercontent.com/tu_usuario/tu_repositorio/main/logo.png" alt="Logo Profitline" />
+    <img src="https://profitline.com.co/wp-content/uploads/2019/10/cropped-profitline-logo-wh-1.png" alt="Profitline Logo">
   </header>
 
   <main>
-    <form id="eventForm" autocomplete="off" novalidate>
+    <form id="formTurno">
       <label for="cedula">Cédula</label>
-      <input type="text" id="cedula" name="cedula" placeholder="Ingresa tu cédula" required pattern="\d+" title="Solo números" />
+      <input type="text" id="cedula" name="cedula" required pattern="[0-9]+" placeholder="Ingresa tu cédula">
 
-      <label for="evento">Selecciona el evento</label>
+      <label for="evento">Evento</label>
       <select id="evento" name="evento" required>
-        <option value="" disabled selected>-- Selecciona evento --</option>
-        <option value="inicioTurno">Inicio de turno</option>
-        <option value="finTurno">Fin de turno</option>
-        <option value="inicioBreak">Inicio de break</option>
-        <option value="finBreak">Fin de break</option>
-        <option value="inicioAlmuerzo">Inicio de almuerzo</option>
-        <option value="finAlmuerzo">Fin de almuerzo</option>
+        <option value="">Selecciona evento</option>
+        <option value="inicioTurno">Inicio Turno</option>
+        <option value="finTurno">Fin Turno</option>
+        <option value="inicioBreak">Inicio Break</option>
+        <option value="finBreak">Fin Break</option>
+        <option value="inicioAlmuerzo">Inicio Almuerzo</option>
+        <option value="finAlmuerzo">Fin Almuerzo</option>
       </select>
 
-      <label for="hora">Hora (captura la hora actual)</label>
-      <div class="hora-container">
+      <label for="hora">Hora actual</label>
+      <div style="display: flex; gap: 10px;">
         <input type="time" id="hora" name="hora" readonly />
-        <button type="button" id="btnCapturarHora">Hora Actual</button>
+        <button type="button" class="hora-btn" onclick="capturarHora()">Capturar</button>
       </div>
 
-      <button type="submit">Guardar Evento</button>
+      <button type="submit" class="submit-btn">Guardar</button>
     </form>
 
-    <div class="success-message" id="successMessage">¡Evento guardado correctamente!</div>
+    <div class="success" id="mensajeExito">✅ ¡Datos guardados correctamente!</div>
   </main>
 
   <script>
-    const btnCapturarHora = document.getElementById('btnCapturarHora');
-    const horaInput = document.getElementById('hora');
-    const form = document.getElementById('eventForm');
-    const successMessage = document.getElementById('successMessage');
+    function capturarHora() {
+      const ahora = new Date();
+      const horas = ahora.getHours().toString().padStart(2, '0');
+      const minutos = ahora.getMinutes().toString().padStart(2, '0');
+      document.getElementById("hora").value = `${horas}:${minutos}`;
+    }
 
-    btnCapturarHora.addEventListener('click', () => {
-      const now = new Date();
-      const h = now.getHours().toString().padStart(2, '0');
-      const m = now.getMinutes().toString().padStart(2, '0');
-      horaInput.value = `${h}:${m}`;
-    });
-
-    form.addEventListener('submit', (e) => {
+    document.getElementById("formTurno").addEventListener("submit", async function(e) {
       e.preventDefault();
-      successMessage.style.display = 'none';
 
-      const cedula = form.cedula.value.trim();
-      const evento = form.evento.value;
-      const hora = horaInput.value;
+      const cedula = document.getElementById("cedula").value;
+      const evento = document.getElementById("evento").value;
+      const hora = document.getElementById("hora").value;
 
-      if (!cedula.match(/^\d+$/)) {
-        alert('Por favor ingresa una cédula válida (solo números).');
+      if (!cedula || !evento || !hora) {
+        alert("Por favor completa todos los campos.");
         return;
       }
 
-      if (!evento) {
-        alert('Selecciona un evento.');
-        return;
-      }
+      const params = new URLSearchParams();
+      params.append("cedula", cedula);
+      params.append(evento, hora);
 
-      if (!hora) {
-        alert('Captura la hora actual con el botón "Hora Act
+      const url = "https://script.google.com/macros/s/AKfycbzhZuObCCe2TgfMpG663zQWI2LsTXW10bBmwM3yHYdl5HIWwwp8JS2jVVF7_Qs4IJJv/exec?" + params.toString();
+
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          document.getElementById("mensajeExito").style.display = "block";
+          setTimeout(() => {
+            document.getElementById("mensajeExito").style.display = "none";
+          }, 3000);
+          document.getElementById("formTurno").reset();
+          document.getElementById("hora").value = '';
+        } else {
+          alert("❌ Error al guardar en Google Sheets.");
+        }
+      } catch (err) {
+        alert("❌ Error de conexión con el servidor.");
+      }
+    });
+  </script>
+</body>
+</html>
