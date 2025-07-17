@@ -39,7 +39,7 @@
     header img {
       max-height: 50px;
       width: auto;
-      filter: brightness(0) invert(1); /* para que el logo blanco se vea si es negro el header */
+      user-select: none;
     }
 
     main {
@@ -162,7 +162,8 @@
 <body>
 
   <header>
-    <img src="https://profitline.com.co/wp-content/uploads/2019/10/cropped-profitline-logo-wh-1.png" alt="Logo Profitline" />
+    <!-- Cambia esta URL por el link directo a tu logo PNG en GitHub -->
+    <img src="https://raw.githubusercontent.com/tu_usuario/tu_repositorio/main/logo.png" alt="Logo Profitline" />
   </header>
 
   <main>
@@ -225,30 +226,4 @@
       }
 
       if (!hora) {
-        alert('Captura la hora actual con el botón "Hora Actual".');
-        return;
-      }
-
-      const data = { cedula };
-      data[evento] = hora;
-
-      const params = new URLSearchParams(data).toString();
-
-      const url = 'https://script.google.com/macros/s/AKfycbzhZuObCCe2TgfMpG663zQWI2LsTXW10bBmwM3yHYdl5HIWwwp8JS2jVVF7_Qs4IJJv/exec?' + params;
-
-      fetch(url)
-        .then(resp => {
-          if (!resp.ok) throw new Error('Error al guardar los datos');
-          return resp.text();
-        })
-        .then(() => {
-          successMessage.style.display = 'block';
-          form.reset();
-          horaInput.value = '';
-        })
-        .catch(err => alert('Error enviando datos: ' + err.message));
-    });
-  </script>
-
-</body>
-</html>
+        alert('Captura la hora actual con el botón "Hora Act
