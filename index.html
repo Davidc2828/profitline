@@ -174,7 +174,8 @@
       finAlmuerzo
     });
 
-    const url = 'https://script.google.com/macros/s/AKfycbzhZuObCCe2TgfMpG663zQWI2LsTXW10bBmwM3yHYdl5HIWwwp8JS2jVVF7_Qs4IJJv/exec' + params.toString();
+    // ✅ CORREGIDO: Agregar "?" antes de los parámetros
+    const url = 'https://script.google.com/macros/s/AKfycbzhZuObCCe2TgfMpG663zQWI2LsTXW10bBmwM3yHYdl5HIWwwp8JS2jVVF7_Qs4IJJv/exec?' + params.toString();
 
     // Enviar por GET
     fetch(url)
