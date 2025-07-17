@@ -37,7 +37,7 @@
       width: 90%;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-top: 40px; /* espacio desde el logo hacia abajo */
+      margin-top: 40px;
     }
 
     label {
@@ -60,14 +60,6 @@
       background-color: #eee;
     }
 
-    .hora-btn {
-      background-color: #000;
-      color: white;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-    }
-
     .submit-btn {
       background-color: #cc0000;
       color: white;
@@ -86,11 +78,6 @@
       margin-top: 15px;
       border-radius: 5px;
     }
-
-    .row {
-      display: flex;
-      gap: 10px;
-    }
   </style>
 </head>
 <body>
@@ -105,7 +92,7 @@
         <input type="text" id="cedula" name="cedula" required pattern="[0-9]+" placeholder="Ingresa tu cédula">
 
         <label for="evento">Evento</label>
-        <select id="evento" name="evento" required>
+        <select id="evento" name="evento" required onchange="capturarHora()">
           <option value="">Selecciona evento</option>
           <option value="inicioTurno">Inicio Turno</option>
           <option value="finTurno">Fin Turno</option>
@@ -116,10 +103,7 @@
         </select>
 
         <label for="hora">Hora actual</label>
-        <div class="row">
-          <input type="time" id="hora" name="hora" readonly />
-          <button type="button" class="hora-btn" onclick="capturarHora()">Capturar</button>
-        </div>
+        <input type="time" id="hora" name="hora" readonly />
 
         <button type="submit" class="submit-btn">Guardar</button>
       </form>
