@@ -135,40 +135,36 @@
     const inicioAlmuerzo = form.inicioAlmuerzo.value;
     const finAlmuerzo = form.finAlmuerzo.value;
 
-    // Validar que tiempos tengan sentido
     if (!inicioTurno || !finTurno || !inicioBreak || !finBreak || !inicioAlmuerzo || !finAlmuerzo) {
       alert('Por favor completa todos los campos de hora.');
       return;
     }
 
-    // Alerta llegada tarde (> 08:00)
+    // Alertas visuales y popups
     if (timeToMinutes(inicioTurno) > timeToMinutes("08:00")) {
       document.getElementById('alertLlegadaTarde').style.display = 'block';
       alert('Alerta: ¡Llegada después de las 08:00!');
     }
 
-    // Alerta salida temprana (< 17:00)
     if (timeToMinutes(finTurno) < timeToMinutes("17:00")) {
       document.getElementById('alertSalidaTemprano').style.display = 'block';
       alert('Alerta: ¡Salida antes de las 17:00!');
     }
 
-    // Duración break
     const duracionBreak = timeToMinutes(finBreak) - timeToMinutes(inicioBreak);
     if (duracionBreak > 15) {
       document.getElementById('alertBreakLargo').style.display = 'block';
       alert('Alerta: ¡Break mayor a 15 minutos!');
     }
 
-    // Duración almuerzo
     const duracionAlmuerzo = timeToMinutes(finAlmuerzo) - timeToMinutes(inicioAlmuerzo);
     if (duracionAlmuerzo > 60) {
       document.getElementById('alertAlmuerzoLargo').style.display = 'block';
       alert('Alerta: ¡Almuerzo mayor a 1 hora!');
     }
 
-    // Preparar datos para enviar
-    const data = {
+    // Crear query string con datos
+    const params = new URLSearchParams({
       cedula,
       inicioTurno,
       finTurno,
@@ -176,29 +172,24 @@
       finBreak,
       inicioAlmuerzo,
       finAlmuerzo
-    };
-
-    // Enviar datos al Apps Script (tu URL)
-    fetch('https://script.google.com/macros/s/AKfycbzUhmRLwGqSmPTsHwINYc6MHheitSWNsjSq8Ohv3voRgTzCc2o2zjk_i659JFmEYU_r/exec', {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(resp => {
-      if (!resp.ok) throw new Error('Error al guardar los datos');
-      return resp.text();
-    })
-    .then(text => {
-      // Mostrar mensaje éxito
-      document.getElementById('successMessage').style.display = 'block';
-      form.reset();
-    })
-    .catch(err => {
-      alert('Error enviando datos: ' + err.message);
     });
+
+    const url = 'https://script.google.com/macros/s/AKfycbzUhmRLwGqSmPTsHwINYc6MHheitSWNsjSq8Ohv3voRgTzCc2o2zjk_i659JFmEYU_r/exec?' + params.toString();
+
+    // Enviar por GET
+    fetch(url)
+      .then(resp => {
+        if (!resp.ok) throw new Error('Error al guardar los datos');
+        return resp.text();
+      })
+      .then(text => {
+        document.getElementById('successMessage').style.display = 'block';
+        form.reset();
+      })
+      .catch(err => {
+        alert('Error enviando datos: ' + err.message);
+      });
+
   });
 </script>
 
